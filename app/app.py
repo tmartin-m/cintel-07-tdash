@@ -1,15 +1,18 @@
 import seaborn as sns
 from faicons import icon_svg
-
 from shiny import reactive
 from shiny.express import input, render, ui
-import palmerpenguins 
+import palmerpenguins
 
 df = palmerpenguins.load_penguins()
 
-ui.page_opts(title="Penguins dashboard", fillable=True)
+# Include custom CSS
+ui.include_css("styles.css")
 
+# Set page title
+ui.page_opts(title="Penguins Dashboard", fillable=True)
 
+# Sidebar
 with ui.sidebar(title="Filter controls"):
     ui.input_slider("mass", "Mass", 2000, 6000, 6000)
     ui.input_checkbox_group(
@@ -20,34 +23,14 @@ with ui.sidebar(title="Filter controls"):
     )
     ui.hr()
     ui.h6("Links")
-    ui.a(
-        "GitHub Source",
-        href="https://github.com/denisecase/cintel-07-tdash",
-        target="_blank",
-    )
-    ui.a(
-        "GitHub App",
-        href="https://denisecase.github.io/cintel-07-tdash/",
-        target="_blank",
-    )
-    ui.a(
-        "GitHub Issues",
-        href="https://github.com/denisecase/cintel-07-tdash/issues",
-        target="_blank",
-    )
+    ui.a("GitHub Source", href="https://github.com/denisecase/cintel-07-tdash", target="_blank")
+    ui.a("GitHub App", href="https://denisecase.github.io/cintel-07-tdash/", target="_blank")
+    ui.a("GitHub Issues", href="https://github.com/denisecase/cintel-07-tdash/issues", target="_blank")
     ui.a("PyShiny", href="https://shiny.posit.co/py/", target="_blank")
-    ui.a(
-        "Template: Basic Dashboard",
-        href="https://shiny.posit.co/py/templates/dashboard/",
-        target="_blank",
-    )
-    ui.a(
-        "See also",
-        href="https://github.com/denisecase/pyshiny-penguins-dashboard-express",
-        target="_blank",
-    )
+    ui.a("Template: Basic Dashboard", href="https://shiny.posit.co/py/templates/dashboard/", target="_blank")
+    ui.a("See also", href="https://github.com/denisecase/pyshiny-penguins-dashboard-express", target="_blank")
 
-
+# Value boxes
 with ui.layout_column_wrap(fill=False):
     with ui.value_box(showcase=icon_svg("earlybirds")):
         "Number of penguins"
@@ -70,7 +53,7 @@ with ui.layout_column_wrap(fill=False):
         def bill_depth():
             return f"{filtered_df()['bill_depth_mm'].mean():.1f} mm"
 
-
+# Charts and data
 with ui.layout_columns():
     with ui.card(full_screen=True):
         ui.card_header("Bill length and depth")
@@ -98,10 +81,7 @@ with ui.layout_columns():
             ]
             return render.DataGrid(filtered_df()[cols], filters=True)
 
-
-#ui.include_css(app_dir / "styles.css")
-
-
+# Reactive filter
 @reactive.calc
 def filtered_df():
     filt_df = df[df["species"].isin(input.species())]
