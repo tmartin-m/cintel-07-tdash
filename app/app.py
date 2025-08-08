@@ -9,9 +9,10 @@ import palmerpenguins
 # Load Data
 df = palmerpenguins.load_penguins()
 
-# UI Layout
+# UI Page
 ui.page_opts(title="Taylor's Penguin Explorer 🐧", fillable=True)
 
+# UI Sidebar
 with ui.sidebar(title="Filter controls"):
     ui.input_slider("mass", "Mass", 2000, 6000, 6000)
     ui.input_checkbox_group(
@@ -20,6 +21,8 @@ with ui.sidebar(title="Filter controls"):
         ["Adelie", "Gentoo", "Chinstrap"],
         selected=["Adelie", "Gentoo", "Chinstrap"],
     )
+
+# Helpful Links
     ui.hr()
     ui.h6("Links")
     ui.a(
@@ -49,7 +52,7 @@ with ui.sidebar(title="Filter controls"):
         target="_blank",
     )
 
-
+# Value Boxes
 with ui.layout_column_wrap(fill=False):
     with ui.value_box(showcase=icon_svg("earlybirds")):
         "Number of penguins"
@@ -72,7 +75,7 @@ with ui.layout_column_wrap(fill=False):
         def bill_depth():
             return f"{filtered_df()['bill_depth_mm'].mean():.1f} mm"
 
-
+# Plots & Tables
 with ui.layout_columns():
     with ui.card(full_screen=True):
         ui.card_header("Bill length and depth")
@@ -103,7 +106,7 @@ with ui.layout_columns():
 
 #ui.include_css(app_dir / "styles.css")
 
-# Reactive Calcu
+# Reactive Calc
 @reactive.calc
 def filtered_df():
     filt_df = df[df["species"].isin(input.species())]
