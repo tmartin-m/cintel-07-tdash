@@ -10,8 +10,7 @@ import palmerpenguins
 df = palmerpenguins.load_penguins()
 
 # UI Layout
-ui.page_opts(title="Penguins Dashboard - Taylor's Forking/Issue Practice", fillable=True)
-
+ui.page_opts(title="Taylor's Penguin Explorer 🐧", fillable=True)
 
 with ui.sidebar(title="Filter controls"):
     ui.input_slider("mass", "Mass", 2000, 6000, 6000)
